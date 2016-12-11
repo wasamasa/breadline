@@ -44,7 +44,7 @@
 ;;; completion
 
 #>
-static void *readline_completer_proc;
+void *readline_completer_proc;
 
 char *readline_completer(const char *prefix, int state) {
   C_word completer = CHICKEN_gc_root_ref(readline_completer_proc);
