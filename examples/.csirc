@@ -1,0 +1,5 @@
+(load-verbose #f)
+(unless (get-environment-variable "INSIDE_EMACS")
+  (use (prefix readline "rl-"))
+  (rl-history-file (format "~a/.csi_history" (get-environment-variable "HOME")))
+  (current-input-port (rl-make-readline-port)))

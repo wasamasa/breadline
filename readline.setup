@@ -1,0 +1,7 @@
+(compile -s -O3 -d1 "readline.scm" -J -lreadline)
+(compile -s "readline.import.scm")
+
+(install-extension
+ 'readline
+ '("readline.so" "readline.import.so")
+ '((version "0.0.1")))

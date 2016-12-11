@@ -1,0 +1,5 @@
+((synopsis "Bindings to readline")
+ (author "Vasilij Schneidermann")
+ (license "GPL-3")
+ (category io)
+ (foreign-depends "readline"))
