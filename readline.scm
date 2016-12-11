@@ -43,12 +43,9 @@
 
 ;;; completion
 
-#> static void *readline_completer_proc; <#
-
-((foreign-lambda* void ()
-   "readline_completer_proc = CHICKEN_new_gc_root();"))
-
 #>
+static void *readline_completer_proc;
+
 char *readline_completer(const char *prefix, int state) {
   C_word completer = CHICKEN_gc_root_ref(readline_completer_proc);
   C_word *a = C_alloc(C_SIZEOF_STRING(strlen(prefix)));
@@ -72,6 +69,7 @@ char *readline_completer(const char *prefix, int state) {
 <#
 
 ((foreign-lambda* void ()
+   "readline_completer_proc = CHICKEN_new_gc_root();"
    "rl_completion_entry_function = &readline_completer;"))
 
 (define completer-set!
