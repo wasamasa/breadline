@@ -1,6 +1,6 @@
 (module readline
   (add-history! read-history! write-history! history-file
-   completer-set!
+   completer-set! completer-word-break-characters-set!
    readline make-readline-port)
 
 (import chicken scheme foreign)
@@ -42,8 +42,6 @@
       (abort (history-error ret 'write-history!)))))
 
 ;;; completion
-
-;; TODO: figure out why completion considers "string->" a word end
 
 #>
 void *readline_completer_proc;
@@ -88,6 +86,10 @@ char *readline_completer(const char *prefix, int state) {
 
 (define (dummy-completer _state _prefix) #f)
 (completer-set! dummy-completer)
+
+(define completer-word-break-characters-set!
+  (foreign-lambda* void ((nonnull-c-string chars))
+    "rl_completer_word_break_characters = chars;"))
 
 ;;; REPL integration
 

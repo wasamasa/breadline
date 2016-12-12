@@ -2,4 +2,5 @@
 (unless (get-environment-variable "INSIDE_EMACS")
   (use (prefix readline "rl-"))
   (rl-history-file (format "~a/.csi_history" (get-environment-variable "HOME")))
+  (rl-completer-word-break-characters-set! "\"\'`;(")
   (current-input-port (rl-make-readline-port)))
