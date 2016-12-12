@@ -43,12 +43,17 @@
 
 ;;; completion
 
+;; TODO: figure out why completion considers "string->" a word end
+
 #>
 void *readline_completer_proc;
 
 char *readline_completer(const char *prefix, int state) {
   C_word completer = CHICKEN_gc_root_ref(readline_completer_proc);
-  C_word *a = C_alloc(C_SIZEOF_STRING(strlen(prefix)));
+  int size = C_SIZEOF_STRING(strlen(prefix));
+  C_word *a = C_alloc(size);
+  // TODO: ensure this fixes stuff
+  C_callback_adjust_stack(a, size);
   C_save(C_fix(state));
   C_save(C_string2(&a, prefix));
   C_word result = C_callback(completer, 2);
