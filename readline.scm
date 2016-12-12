@@ -73,9 +73,9 @@ char *readline_completer(const char *prefix, int state) {
 }
 <#
 
-((foreign-lambda* void ()
-   "readline_completer_proc = CHICKEN_new_gc_root();"
-   "rl_completion_entry_function = &readline_completer;"))
+(foreign-code
+ "readline_completer_proc = CHICKEN_new_gc_root();"
+ "rl_completion_entry_function = &readline_completer;")
 
 (define completer-set!
   (foreign-lambda* void ((scheme-object completer))
