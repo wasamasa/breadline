@@ -2,4 +2,5 @@
  (author "Vasilij Schneidermann")
  (license "GPL-3")
  (category io)
+ (depends apropos)
  (foreign-depends "readline"))

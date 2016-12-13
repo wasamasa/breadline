@@ -1,3 +1,8 @@
+(module readline-scheme-completion
+  (scheme-completer)
+
+(import chicken scheme)
+
 (use srfi-1 apropos data-structures readline)
 
 (define (apropos-completions prefix)
@@ -17,7 +22,7 @@
         (index 0))
     (lambda (prefix state)
       (when (zero? state)
-        (let ((candidates (apply append (map (lambda (proc) (proc prefix)) procs))))
+        (let ((candidates (append-map (lambda (proc) (proc prefix)) procs)))
           (set! completions (list->vector candidates)))
         (set! index 0))
       (if (< index (vector-length completions))
@@ -29,4 +34,4 @@
 (define scheme-completer
   (make-completer apropos-completions current-environment-completions))
 
-(completer-set! scheme-completer)
+)
