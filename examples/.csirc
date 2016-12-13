@@ -1,6 +1,7 @@
 (load-verbose #f)
 (unless (get-environment-variable "INSIDE_EMACS")
-  (use (prefix readline "rl-"))
+  (use (prefix readline "rl-") (prefix readline-scheme-completion "rl-"))
   (rl-history-file (format "~a/.csi_history" (get-environment-variable "HOME")))
   (rl-completer-word-break-characters-set! "\"\'`;(")
+  (rl-completer-set! rl-scheme-completer)
   (current-input-port (rl-make-readline-port)))
