@@ -2,6 +2,7 @@
   (history-file add-history! read-history! write-history!
    stifle-history! unstifle-history!
    completer-set! completer-word-break-characters-set!
+   basic-quote-characters-set!
    readline make-readline-port)
 
 (import chicken scheme foreign)
@@ -95,6 +96,12 @@ char *readline_completer(const char *prefix, int state) {
 (define completer-word-break-characters-set!
   (foreign-lambda* void ((nonnull-c-string chars))
     "rl_completer_word_break_characters = chars;"))
+
+;;; misc
+
+(define basic-quote-characters-set!
+  (foreign-lambda* void ((nonnull-c-string chars))
+    "rl_basic_quote_characters = chars;"))
 
 ;;; REPL integration
 
