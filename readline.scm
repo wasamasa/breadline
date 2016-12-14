@@ -129,7 +129,7 @@ char *readline_completer(const char *prefix, int state) {
                 (read-char)))))
            (char-ready? (lambda () (< position (string-length buffer))))
            (close (lambda () #f)))
-    (when (history-file)
+    (when (and (history-file) (file-exists? (history-file)))
       (read-history! (history-file)))
     (set! port (make-input-port read-char char-ready? close))
     (set-port-name! port "(readline)")
