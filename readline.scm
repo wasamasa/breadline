@@ -2,7 +2,8 @@
   (history-file add-history! read-history! write-history!
    stifle-history! unstifle-history!
    completer-set! completer-word-break-characters-set!
-   basic-quote-characters-set!
+   variable-bind! variable-value
+   basic-quote-characters-set! paren-blink-timeout-set!
    readline make-readline-port)
 
 (import chicken scheme foreign)
@@ -99,9 +100,19 @@ char *readline_completer(const char *prefix, int state) {
 
 ;;; misc
 
+(define variable-bind!
+  ;; NOTE: this seems to always return zero
+  (foreign-lambda int "rl_variable_bind" (const nonnull-c-string) (const nonnull-c-string)))
+
+(define variable-value
+  (foreign-lambda c-string "rl_variable_value" (const nonnull-c-string)))
+
 (define basic-quote-characters-set!
   (foreign-lambda* void ((nonnull-c-string chars))
     "rl_basic_quote_characters = chars;"))
+
+(define paren-blink-timeout-set!
+  (foreign-lambda int "rl_set_paren_blink_timeout" int))
 
 ;;; REPL integration
 
