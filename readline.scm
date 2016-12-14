@@ -53,6 +53,18 @@
 #>
 void *readline_completer_proc;
 
+char *copy_scheme_string(C_word string) {
+  char *src = C_c_string(string);
+  size_t size = C_unfix(C_i_string_length(string));
+  char *dest = malloc(size + 1);
+  if (dest == NULL) {
+    return NULL;
+  }
+  strncpy(dest, src, size);
+  dest[size] = '\0';
+  return dest;
+}
+
 char *readline_completer(const char *prefix, int state) {
   C_word completer = CHICKEN_gc_root_ref(readline_completer_proc);
   int size = C_SIZEOF_STRING(strlen(prefix));
@@ -65,15 +77,7 @@ char *readline_completer(const char *prefix, int state) {
   if (result == C_SCHEME_FALSE) {
     return NULL;
   } else {
-    char *src = C_c_string(result);
-    size_t size = C_unfix(C_i_string_length(result));
-    char *dest = malloc(size + 1);
-    if (dest == NULL) {
-      return NULL;
-    }
-    strncpy(dest, src, size);
-    dest[size] = '\0';
-    return dest;
+    return copy_scheme_string(result);
   }
 }
 <#
@@ -95,8 +99,9 @@ char *readline_completer(const char *prefix, int state) {
 (completer-set! dummy-completer)
 
 (define completer-word-break-characters-set!
-  (foreign-lambda* void ((nonnull-c-string chars))
-    "rl_completer_word_break_characters = chars;"))
+  (foreign-lambda* void ((scheme-object string))
+    "char *chars = copy_scheme_string(string);"
+    "if (chars) rl_completer_word_break_characters = chars;"))
 
 ;;; misc
 
