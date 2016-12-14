@@ -1,5 +1,6 @@
 (module readline
-  (add-history! read-history! write-history! history-file
+  (history-file add-history! read-history! write-history!
+   stifle-history! unstifle-history!
    completer-set! completer-word-break-characters-set!
    readline make-readline-port)
 
@@ -29,8 +30,6 @@
    (make-property-condition 'i/o)
    (make-property-condition 'file)))
 
-;; TODO: figure out how history truncation works
-
 (define (read-history! filename)
   (let ((ret ((foreign-lambda int "read_history" (const c-string)) filename)))
     (when (not (zero? ret))
@@ -40,6 +39,12 @@
   (let ((ret ((foreign-lambda int "write_history" (const c-string)) filename)))
     (when (not (zero? ret))
       (abort (history-error ret 'write-history!)))))
+
+(define stifle-history!
+  (foreign-lambda void "stifle_history" int))
+
+(define unstifle-history!
+  (foreign-lambda int "unstifle_history"))
 
 ;;; completion
 
