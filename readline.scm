@@ -58,7 +58,7 @@ char *readline_completer(const char *prefix, int state) {
   // TODO: ensure this fixes stuff
   C_callback_adjust_stack(a, size);
   C_save(C_fix(state));
-  C_save(C_string2(&a, prefix));
+  C_save(C_string2(&a, (char *) prefix));
   C_word result = C_callback(completer, 2);
   if (result == C_SCHEME_FALSE) {
     return NULL;
