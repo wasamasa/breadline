@@ -113,8 +113,9 @@ char *readline_completer(const char *prefix, int state) {
   (foreign-lambda c-string "rl_variable_value" (const nonnull-c-string)))
 
 (define basic-quote-characters-set!
-  (foreign-lambda* void ((nonnull-c-string chars))
-    "rl_basic_quote_characters = chars;"))
+  (foreign-lambda* void ((scheme-object string))
+    "char *chars = copy_scheme_string(string);"
+    "if (chars) rl_basic_quote_characters = chars;"))
 
 (define paren-blink-timeout-set!
   (foreign-lambda int "rl_set_paren_blink_timeout" int))
