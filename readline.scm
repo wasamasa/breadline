@@ -98,10 +98,14 @@ char *readline_completer(const char *prefix, int state) {
 (define (dummy-completer _state _prefix) #f)
 (completer-set! dummy-completer)
 
-(define completer-word-break-characters-set!
-  (foreign-lambda* void ((scheme-object string))
-    "char *chars = copy_scheme_string(string);"
-    "if (chars) rl_completer_word_break_characters = chars;"))
+(define (completer-word-break-characters-set! string)
+  (ensure string? string "bad argument type - not a string" string)
+  ((foreign-lambda* void ((scheme-object string))
+     ;; NOTE: the result is never freed which one might want if this
+     ;; procedure were to be called more than once...
+     "char *chars = copy_scheme_string(string);"
+     "if (chars) rl_completer_word_break_characters = chars;")
+   string))
 
 ;;; misc
 
@@ -112,10 +116,12 @@ char *readline_completer(const char *prefix, int state) {
 (define variable-value
   (foreign-lambda c-string "rl_variable_value" (const nonnull-c-string)))
 
-(define basic-quote-characters-set!
-  (foreign-lambda* void ((scheme-object string))
-    "char *chars = copy_scheme_string(string);"
-    "if (chars) rl_basic_quote_characters = chars;"))
+(define (basic-quote-characters-set! string)
+  (ensure string? string "bad argument type - not a string" string)
+  ((foreign-lambda* void ((scheme-object string))
+     "char *chars = copy_scheme_string(string);"
+     "if (chars) rl_basic_quote_characters = chars;")
+   string))
 
 (define paren-blink-timeout-set!
   (foreign-lambda int "rl_set_paren_blink_timeout" int))
