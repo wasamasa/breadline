@@ -86,9 +86,11 @@ char *readline_completer(const char *prefix, int state) {
  "readline_completer_proc = CHICKEN_new_gc_root();"
  "rl_completion_entry_function = &readline_completer;")
 
-(define completer-set!
-  (foreign-lambda* void ((scheme-object completer))
-    "CHICKEN_gc_root_set(readline_completer_proc, completer);"))
+(define (completer-set! proc)
+  (ensure procedure? proc "bad argument type - not a procedure" proc)
+  ((foreign-lambda* void ((scheme-object completer))
+     "CHICKEN_gc_root_set(readline_completer_proc, completer);")
+   proc))
 
 ;; HACK: readline's default completion uses file names from the
 ;; current directory, to disable it one can either bind TAB to a
