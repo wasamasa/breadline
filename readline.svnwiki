@@ -1,0 +1,159 @@
+== readline
+
+[[toc:]]
+
+=== Introduction
+
+This egg provides an incomplete set of bindings to the
+[[http://tiswww.case.edu/php/chet/readline/rltop.html|GNU Readline]]
+library, suitable for augmenting {{csi}} and writing a {{csi}}-like
+application with line editing support.
+
+=== Author
+
+Vasilij Schneidermann
+
+=== Repository
+
+[[https://github.com/wasamasa/readline]]
+
+=== Current state of the bindings
+
+* Basic interface for reading input and managing history
+* Completion interface
+* Customization of aspects crucial for Scheme programming
+
+=== Requirements
+
+You'll need to have a not too old version of GNU Readline installed.
+
+=== API
+
+==== History
+
+<parameter>(history-file)</parameter>
+<parameter>(history-file PATH)</parameter>
+
+Specifies the location of the history file for {{make-readline-port}}.
+Defaults to {{#f}} which means to neither read nor write out the
+history.  {{PATH}} may be relative to the current working directory.
+
+<procedure>(add-history! ITEM)</procedure>
+
+Adds {{ITEM}} to the current history.
+
+<procedure>(read-history! FILE)</procedure>
+
+Reads in history items from {{FILE}} and adds them to the current
+history.
+
+<procedure>(write-history! FILE)</procedure>
+
+Writes out current history items to {{FILE}}.
+
+<procedure>(stifle-history! MAX)</procedure>
+
+Configure the current history to hold at most {{MAX}} items.
+
+<procedure>(unstifle-history!)</procedure>
+
+Undo any history stifling.  Returns the previously set maximum amount
+of history items as set by {{stifle-history!}}.  If the history was
+not stifled before, the value is negative.
+
+==== Completion
+
+<procedure>(completer-set! PROC)</procedure>
+
+Set the completion handler to {{PROC}}.  {{PROC}} is called repeatedly
+to collect completions with a fixnum state argument and a string
+prefix.  A state argument of zero means that the completion procedure
+may initialize its data, it is incremented for every subsequent call.
+The completion procedure must either return a completion matching the
+given string prefix or {{#f}} to signal that no further completions
+follow.  It is up to the completion procedure to keep track of what
+completions have been offered and whether any further completions are
+vailable.
+
+<procedure>(completer-word-break-characters-set STRING)</procedure>
+
+Sets the word-breaking characters for completion to {{STRING}}.  The
+default value of {{\t\n\"\\'`@$><=;|&{(}} is suitable for Bash's
+completion.
+
+==== Customization
+
+<procedure>(variable-bind! VARIABLE VALUE)</procedure>
+
+Sets a GNU Readline variable to a value.  Both {{VARIABLE}} and
+{{VALUE}} must be strings.
+
+<procedure>(variable-value VARIABLE)</procedure>
+
+Retrieves the current value of the given GNU Readline variable.
+{{VARIABLE}} must be a string.
+
+<procedure>(basic-quote-characters-set STRING)</procedure>
+
+Sets the quoting characters to {{STRING}}, the default value being
+{{"'}}.  This setting is used for paren blinking to determine strings.
+
+<procedure>(paren-blink-timeout-set MICROSECS)</procedure>
+
+Sets the timeout for paren blinking in microseconds, the default value
+being 500000 microseconds.  Note that typing a closing paren will not
+blink the opening paren unless {{blink-matching-paren}} has been set.
+
+==== Line editing
+
+<procedure>(readline PROMPT)</procedure>
+
+Read in a line of user input after printing {{PROMPT}}.  Returns the
+user input or {{#f}} if input has been terminated with {{C-d}}.
+
+<procedure>(make-readline-port [PROMPT])</procedure>
+
+Returns an input port using GNU Readline for line editing and history
+management.  {{PROMPT}} defaults to the value of calling
+{{(repl-prompt)}}.
+
+=== Examples
+
+<enscript highlight="scheme">
+(use readline)
+
+(let loop ()
+  (let ((input (readline "> ")))
+    (if input
+        (begin
+          ;; processing code goes here
+          (print input)
+          (add-history! input)
+          (loop))
+        (newline))))
+</enscript>
+
+Further examples for usage in {{csi}} and writing your own completer
+can be found
+[[https://github.com/wasamasa/readline/tree/master/examples|in the repository]].
+
+=== License
+
+ Copyright 2016 Vasilij Schneidermann
+ 
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or (at
+ your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
+ 
+ A full copy of the GPL license can be found at
+ <http://www.gnu.org/licenses/>.
+
+=== Version history
+
+TBD
