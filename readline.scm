@@ -67,9 +67,8 @@ char *copy_scheme_string(C_word string) {
 
 char *readline_completer(const char *prefix, int state) {
   C_word completer = CHICKEN_gc_root_ref(readline_completer_proc);
-  int size = C_SIZEOF_STRING(strlen(prefix));
+  int size = C_SIZEOF_STRING(strlen(prefix)) + 2; // fixnum is two words
   C_word *a = C_alloc(size);
-  // TODO: ensure this fixes stuff
   C_callback_adjust_stack(a, size);
   C_save(C_fix(state));
   C_save(C_string2(&a, (char *) prefix));
