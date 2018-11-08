@@ -1,4 +1,4 @@
-(module readline
+(module breadline
   (history-file add-history! read-history! write-history!
    stifle-history! unstifle-history!
    completer-set! completer-word-break-characters-set!
@@ -8,7 +8,7 @@
 
 (import chicken scheme foreign)
 
-(use ports extras srfi-4)
+(use ports)
 
 #>
 #include "readline/readline.h"
@@ -67,7 +67,7 @@ char *copy_scheme_string(C_word string) {
 
 char *readline_completer(const char *prefix, int state) {
   C_word completer = CHICKEN_gc_root_ref(readline_completer_proc);
-  int size = C_SIZEOF_STRING(strlen(prefix)) + 2; // fixnum is two words
+  int size = C_SIZEOF_STRING(strlen(prefix));
   C_word *a = C_alloc(size);
   C_callback_adjust_stack(a, size);
   C_save(C_fix(state));

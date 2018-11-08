@@ -1,4 +1,4 @@
-== readline
+== breadline
 
 [[toc:]]
 
@@ -15,7 +15,7 @@ Vasilij Schneidermann
 
 === Repository
 
-[[https://github.com/wasamasa/readline]]
+[[https://github.com/wasamasa/breadline]]
 
 === Current state of the bindings
 
@@ -25,7 +25,9 @@ Vasilij Schneidermann
 
 === Requirements
 
-You'll need to have a not too old version of GNU Readline installed.
+You'll need to have a not too old version of GNU Readline
+installed. This egg has been tested with version 7, but version 6
+should work as well.
 
 === API
 

@@ -1,6 +1,6 @@
 (load-verbose #f)
 (unless (get-environment-variable "INSIDE_EMACS")
-  (use (prefix readline "rl-") (prefix readline-scheme-completion "rl-"))
+  (use (prefix breadline "rl-") (prefix breadline-scheme-completion "rl-"))
   (rl-history-file (format "~a/.csi_history" (get-environment-variable "HOME")))
   (rl-stifle-history! 10000)
   (rl-completer-word-break-characters-set! "\"\'`;|(")

@@ -1,4 +1,4 @@
-(use readline data-structures)
+(use breadline data-structures)
 
 (define completion-index 0)
 (define completion-candidates #("foo" "bar" "baz" "💩")) ; <- utf-8 test
