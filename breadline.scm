@@ -6,9 +6,14 @@
    basic-quote-characters-set! paren-blink-timeout-set!
    readline make-readline-port)
 
-(import chicken scheme foreign)
-
-(use ports)
+(import scheme)
+(import (chicken base))
+(import (chicken foreign))
+(import (chicken port))
+(import (chicken file))
+(import (chicken repl))
+(import (chicken gc))
+(import (chicken condition))
 
 #>
 #include "readline/readline.h"
@@ -86,7 +91,8 @@ char *readline_completer(const char *prefix, int state) {
  "rl_completion_entry_function = &readline_completer;")
 
 (define (completer-set! proc)
-  (ensure procedure? proc "bad argument type - not a procedure" proc)
+  (when (not (procedure? proc))
+    (error "bad argument type - not a procedure" proc))
   ((foreign-lambda* void ((scheme-object completer))
      "CHICKEN_gc_root_set(readline_completer_proc, completer);")
    proc))
@@ -100,7 +106,8 @@ char *readline_completer(const char *prefix, int state) {
 (completer-set! dummy-completer)
 
 (define (completer-word-break-characters-set! string)
-  (ensure string? string "bad argument type - not a string" string)
+  (when (not (string? string))
+    (error "bad argument type - not a string" string))
   ((foreign-lambda* void ((scheme-object string))
      ;; NOTE: the result is never freed which one might want if this
      ;; procedure were to be called more than once...
@@ -118,7 +125,8 @@ char *readline_completer(const char *prefix, int state) {
   (foreign-lambda c-string "rl_variable_value" (const nonnull-c-string)))
 
 (define (basic-quote-characters-set! string)
-  (ensure string? string "bad argument type - not a string" string)
+  (when (not (string? string))
+    (error "bad argument type - not a string" string))
   ((foreign-lambda* void ((scheme-object string))
      "char *chars = copy_scheme_string(string);"
      "if (chars) rl_basic_quote_characters = chars;")

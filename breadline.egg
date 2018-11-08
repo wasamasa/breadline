@@ -1,0 +1,10 @@
+((synopsis "Bindings to readline")
+ (author "Vasilij Schneidermann")
+ (license "GPL-3")
+ (category io)
+ (dependencies apropos)
+ (foreign-dependencies "readline")
+ (components (extension breadline-scheme-completion
+                        (component-dependencies breadline))
+             (extension breadline
+                        (link-options "-L" "-lreadline"))))

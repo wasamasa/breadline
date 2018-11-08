@@ -1,9 +1,12 @@
 (module breadline-scheme-completion
   (scheme-completer)
 
-(import chicken scheme)
-
-(use srfi-1 apropos data-structures breadline)
+(import scheme)
+(import (chicken base))
+(import (chicken string))
+(import (srfi 1))
+(import apropos)
+(import breadline)
 
 (define (apropos-completions prefix)
   (let ((candidates (apropos-list `(: bos ,prefix) #:macros? #t)))

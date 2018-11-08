@@ -1,4 +1,6 @@
-(use breadline data-structures)
+(import scheme)
+(import (chicken string))
+(import breadline)
 
 (define completion-index 0)
 (define completion-candidates #("foo" "bar" "baz" "💩")) ; <- utf-8 test
