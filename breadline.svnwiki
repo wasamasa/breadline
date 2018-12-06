@@ -83,6 +83,30 @@ Sets the word-breaking characters for completion to {{STRING}}.  The
 default value of {{\t\n\"\\'`@$><=;|&{(}} is suitable for Bash's
 completion.
 
+==== Text Manipulation
+
+<procedure>(insert-text STRING)</procedure>
+
+Insert {{STRING}} into the line at the current cursor position.
+Returns the number of characters inserted.
+
+<procedure>(delete-text START END)</procedure>
+
+Delete the text between {{START}} and {{END}} in the current line.
+Returns the number of characters deleted.
+
+<procedure>(stuff-char CHAR)</procedure>
+
+Insert {{CHAR}} into the Readline input stream. It will be "read"
+before Readline attempts to read characters from the terminal. Up to
+512 characters may be pushed back. Returns {{1}} if the character was
+successfully inserted; {{0}} otherwise.
+
+<procedure>(redisplay)</procedure>
+
+Change what's displayed on the screen to reflect the current contents
+of Readline's buffer.
+
 ==== Event hooks
 
 <procedure>(event-hook-set! PROCEDURE)</procedure>

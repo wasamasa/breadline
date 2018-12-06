@@ -4,6 +4,7 @@
    completer-set! completer-word-break-characters-set!
    variable-bind! variable-value
    event-hook-set! pre-input-hook-set!
+   insert-text delete-text stuff-char redisplay
    basic-quote-characters-set! paren-blink-timeout-set!
    readline make-readline-port)
 
@@ -138,6 +139,18 @@ char *readline_completer(const char *prefix, int state) {
 
 (define paren-blink-timeout-set!
   (foreign-lambda int "rl_set_paren_blink_timeout" int))
+
+(define insert-text
+  (foreign-lambda int "rl_insert_text" (const nonnull-c-string)))
+
+(define delete-text
+  (foreign-lambda int "rl_delete_text" int int))
+
+(define stuff-char
+  (foreign-lambda int "rl_stuff_char" char))
+
+(define redisplay
+  (foreign-lambda void "rl_redisplay"))
 
 ;;; Events
 
