@@ -3,7 +3,7 @@
    stifle-history! unstifle-history!
    completer-set! completer-word-break-characters-set!
    variable-bind! variable-value
-   event-hook-set!
+   event-hook-set! pre-input-hook-set!
    basic-quote-characters-set! paren-blink-timeout-set!
    readline make-readline-port)
 
@@ -144,6 +144,7 @@ char *readline_completer(const char *prefix, int state) {
 #>
 
 void *readline_event_hook_proc;
+void *readline_pre_input_hook_proc;
 
 <#
 
@@ -151,11 +152,20 @@ void *readline_event_hook_proc;
  ;; rl_event_hook
  "readline_event_hook_proc = CHICKEN_new_gc_root();"
  "CHICKEN_gc_root_set(readline_event_hook_proc, C_SCHEME_FALSE);"
- "rl_event_hook = (rl_hook_func_t *)readline_event_hook;")
+ "rl_event_hook = (rl_hook_func_t *)readline_event_hook;"
+ ;; rl_pre_input_hook
+ "readline_pre_input_hook_proc = CHICKEN_new_gc_root();"
+ "CHICKEN_gc_root_set(readline_pre_input_hook_proc, C_SCHEME_FALSE);"
+ "rl_pre_input_hook = (rl_hook_func_t *)readline_pre_input_hook;")
 
 (define-external (readline_event_hook) void
   (and-let* ((proc ((foreign-primitive scheme-object ()
                      "C_return(CHICKEN_gc_root_ref(readline_event_hook_proc));"))))
+    (proc)))
+
+(define-external (readline_pre_input_hook) void
+  (and-let* ((proc ((foreign-primitive scheme-object ()
+                     "C_return(CHICKEN_gc_root_ref(readline_pre_input_hook_proc));"))))
     (proc)))
 
 (define (event-hook-set! proc)
@@ -163,6 +173,13 @@ void *readline_event_hook_proc;
     (error "bad argument type - not a procedure" proc))
   ((foreign-lambda* void ((scheme-object hook))
      "CHICKEN_gc_root_set(readline_event_hook_proc, hook);")
+   proc))
+
+(define (pre-input-hook-set! proc)
+  (unless (or (not proc) (procedure? proc))
+    (error "bad argument type - not a procedure" proc))
+  ((foreign-lambda* void ((scheme-object hook))
+     "CHICKEN_gc_root_set(readline_pre_input_hook_proc, hook);")
    proc))
 
 ;;; REPL integration

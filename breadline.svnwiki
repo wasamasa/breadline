@@ -95,6 +95,16 @@ be a thunk. Its return value is ignored.
 Only one event hook may be registered at a time. A
 previously-registered hook may be disabled by passing {{#f}}.
 
+<procedure>(pre-input-hook-set! PROCEDURE)</procedure>
+
+Registers a hook that will be called every time the first input prompt
+has been printed, just before {{readline}} starts reading input
+characters. The argument should be a thunk. Its return value is
+ignored.
+
+Only one pre-input hook may be registered at a time. A
+previously-registered hook may be disabled by passing {{#f}}.
+
 ==== Customization
 
 <procedure>(variable-bind! VARIABLE VALUE)</procedure>
