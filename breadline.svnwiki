@@ -83,6 +83,52 @@ Sets the word-breaking characters for completion to {{STRING}}.  The
 default value of {{\t\n\"\\'`@$><=;|&{(}} is suitable for Bash's
 completion.
 
+==== Text Manipulation
+
+<procedure>(insert-text STRING)</procedure>
+
+Insert {{STRING}} into the line at the current cursor position.
+Returns the number of characters inserted.
+
+<procedure>(delete-text START END)</procedure>
+
+Delete the text between {{START}} and {{END}} in the current line.
+Returns the number of characters deleted.
+
+<procedure>(stuff-char CHAR)</procedure>
+
+Insert {{CHAR}} into the Readline input stream. It will be "read"
+before Readline attempts to read characters from the terminal. Up to
+512 characters may be pushed back. Returns {{1}} if the character was
+successfully inserted; {{0}} otherwise.
+
+<procedure>(redisplay)</procedure>
+
+Change what's displayed on the screen to reflect the current contents
+of Readline's buffer.
+
+==== Event hooks
+
+<procedure>(event-hook-set! PROCEDURE)</procedure>
+
+Registers a hook that will be called periodically when Readline is
+waiting for terminal input. By default, this will be called at most
+ten times a second if there is no keyboard input. The argument should
+be a thunk. Its return value is ignored.
+
+Only one event hook may be registered at a time. A
+previously-registered hook may be disabled by passing {{#f}}.
+
+<procedure>(pre-input-hook-set! PROCEDURE)</procedure>
+
+Registers a hook that will be called every time the first input prompt
+has been printed, just before {{readline}} starts reading input
+characters. The argument should be a thunk. Its return value is
+ignored.
+
+Only one pre-input hook may be registered at a time. A
+previously-registered hook may be disabled by passing {{#f}}.
+
 ==== Customization
 
 <procedure>(variable-bind! VARIABLE VALUE)</procedure>
