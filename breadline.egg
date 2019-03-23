@@ -3,8 +3,8 @@
  (license "GPL-3")
  (category io)
  (dependencies apropos)
- (foreign-dependencies "readline")
+ (foreign-dependencies "readline" "ncurses")
  (components (extension breadline-scheme-completion
                         (component-dependencies breadline))
              (extension breadline
-                        (link-options "-L" "-lreadline"))))
+                        (link-options "-L" "-lreadline -lncurses"))))
