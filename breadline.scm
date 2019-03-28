@@ -10,12 +10,13 @@
 
 (import scheme)
 (import (chicken base))
-(import (chicken foreign))
-(import (chicken port))
-(import (chicken file))
-(import (chicken repl))
-(import (chicken gc))
 (import (chicken condition))
+(import (chicken file))
+(import (chicken foreign))
+(import (chicken format))
+(import (chicken gc))
+(import (chicken port))
+(import (chicken repl))
 
 (declare
   (emit-external-prototypes-first))
@@ -203,6 +204,18 @@ void *readline_pre_input_hook_proc;
 (define readline
   (foreign-safe-lambda c-string* "readline" (const nonnull-c-string)))
 
+(define (prompt->string prompt)
+  (cond
+   ((procedure? prompt) (prompt))
+   ((string? prompt) prompt)
+   (else (let ((message (format "Bad argument type - not a string: ~a" prompt)))
+           (abort
+            (make-composite-condition
+             (make-property-condition 'exn
+                                      'location 'prompt->string
+                                      'message message)
+             (make-property-condition 'type)))))))
+
 (define (make-readline-port #!optional prompt)
   (letrec ((buffer "")
            (position 0)
@@ -218,7 +231,7 @@ void *readline_pre_input_hook_proc;
                   char))
                (else
                 (set! position 0)
-                (let* ((prompt (or prompt ((repl-prompt))))
+                (let* ((prompt (prompt->string (or prompt (repl-prompt))))
                        (result (readline prompt)))
                   (when result
                     (add-history! result))
