@@ -1,5 +1,5 @@
 (module breadline
-  (history-file add-history! read-history! write-history!
+  (history-length history-file add-history! read-history! write-history!
    stifle-history! unstifle-history!
    completer-set! completer-word-break-characters-set!
    variable-bind! variable-value
@@ -27,6 +27,8 @@
 <#
 
 ;;; history
+
+(define (history-length) (foreign-value "history_length" int))
 
 (define history-file (make-parameter #f))
 
