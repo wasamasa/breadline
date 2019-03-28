@@ -33,6 +33,10 @@ should work as well.
 
 ==== History
 
+<procedure>(history-length)</procedure>
+
+Returns the current history length.
+
 <parameter>(history-file)</parameter>
 <parameter>(history-file PATH)</parameter>
 
@@ -162,8 +166,8 @@ user input or {{#f}} if input has been terminated with {{C-d}}.
 <procedure>(make-readline-port [PROMPT])</procedure>
 
 Returns an input port using GNU Readline for line editing and history
-management.  {{PROMPT}} defaults to the value of calling
-{{(repl-prompt)}}.
+management.  {{PROMPT}} may be a string or a thunk returning a string
+and defaults to {{(repl-prompt)}}.
 
 === Examples
 
