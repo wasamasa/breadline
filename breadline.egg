@@ -5,6 +5,8 @@
  (dependencies apropos)
  (foreign-dependencies "readline" "ncurses")
  (components (extension breadline-scheme-completion
-                        (component-dependencies breadline))
+                        (component-dependencies breadline)
+                        (source-dependencies "breadline-scheme-completion-impl.scm"))
              (extension breadline
+                        (source-dependencies "breadline-impl.scm")
                         (link-options "-L" "-lreadline -lncurses"))))
