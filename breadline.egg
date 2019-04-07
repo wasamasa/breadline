@@ -9,4 +9,4 @@
                         (source-dependencies "breadline-scheme-completion-impl.scm"))
              (extension breadline
                         (source-dependencies "breadline-impl.scm")
-                        (link-options "-L" "-lreadline -lncurses"))))
+                        (custom-build "build-breadline"))))

@@ -1,0 +1,6 @@
+#!/bin/bash
+if type -P pkg-config > /dev/null; then
+    "$CHICKEN_CSC" -C $(pkg-config --cflags readline) -L $(pkg-config --libs readline) "$@"
+else
+    "$CHICKEN_CSC" -C "$CFLAGS" -L "${LDFLAGS:--lreadline -lncurses}" "$@"
+fi
