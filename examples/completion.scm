@@ -1,4 +1,5 @@
 (import scheme)
+(import (chicken base))
 (import (chicken string))
 (import breadline)
 
