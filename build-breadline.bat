@@ -1,2 +1,2 @@
 @echo off
-%CHICKEN_CSC% -C %CFLAGS% -L -lreadline %LDFLAGS% %*
+%CHICKEN_CSC% -C %READLINE_CFLAGS% -L %READLINE_LDLIBS% %*
