@@ -135,6 +135,15 @@ char *readline_completer(const char *prefix, int state) {
 (define redisplay
   (foreign-lambda void "rl_redisplay"))
 
+(define cleanup-after-signal!
+  (foreign-lambda void "rl_cleanup_after_signal"))
+
+(define reset-after-signal!
+  (foreign-lambda void "rl_reset_after_signal"))
+
+(define (reset-terminal! #!optional terminal-name)
+  ((foreign-lambda bool "rl_reset_terminal" c-string) terminal-name))
+
 ;;; Events
 
 #>

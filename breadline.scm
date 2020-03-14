@@ -6,6 +6,7 @@
    event-hook-set! pre-input-hook-set!
    insert-text delete-text stuff-char redisplay
    basic-quote-characters-set! paren-blink-timeout-set!
+   cleanup-after-signal! reset-after-signal! reset-terminal!
    readline make-readline-port)
 
   (import scheme)
